@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Block
+{
+    public Transform blockTransform;
+}
+
 public class GameManager : MonoBehaviour {
 
+    public Block[,,] blocks = new Block[5, 5, 5];
     public GameObject blockPrefab;
 
     private GameObject foundationObject;
 
-    private Vector3 blockOffset = new Vector3(1.5f, 1.5f, 1.5f);
-    private Vector3 foundationCenter = new Vector3(2.5f, 0, 2.5f);
+    private Vector3 blockOffset = new Vector3(0.5f, 0.5f, 0.5f);
+    private Vector3 foundationCenter = new Vector3(2.5f, 0f, 2.5f);
 
 	// Use this for initialization
 	void Start () {
@@ -23,9 +29,43 @@ public class GameManager : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 30.0f))
             {
-                GameObject go = Instantiate(blockPrefab) as GameObject;
-                go.transform.position = hit.point;
+                Vector3 index = BlockPosition(hit.point);
+
+                int x = (int)index.x
+                    , y = (int)index.y
+                    , z = (int)index.z;
+
+                if (blocks[x, y, z] == null)
+                {
+                    GameObject go = Instantiate(blockPrefab) as GameObject;
+                    PositionBlock(go.transform, index);
+
+                    blocks[x, y, z] = new Block
+                    {
+                        blockTransform = go.transform
+                    };
+                }
+                else
+                {
+                    Debug.Log("Error: clicking inside of a cube at position " + index.ToString());
+                }
             }
         }
 	}
+
+    private Vector3 BlockPosition(Vector3 hit)
+    {
+        //Transform world point into block array
+        Vector3 fnd = foundationObject.transform.position - foundationCenter;
+        float x = (int)(hit.x + fnd.x);
+        float y = (int)(hit.y + fnd.y);
+        float z = (int)(hit.z + fnd.z);
+
+        return new Vector3(x, y, z);
+    }
+
+    private void PositionBlock(Transform t, Vector3 index)
+    {
+        t.position = (index + blockOffset) + (foundationObject.transform.position - foundationCenter);
+    }
 }
