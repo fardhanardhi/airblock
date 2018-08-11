@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
   <Tracking>
-    <ImageTarget name="7clubs" size="10.000000 13.507692" />
+    <ImageTarget name="8spades" size="1.000000 1.350769" />
+    <ImageTarget name="7clubs" size="1.000000 1.350769" />
   </Tracking>
 </QCARConfig>
