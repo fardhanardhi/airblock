@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Block
 {
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 30.0f))
             {
+
                 Vector3 index = BlockPosition(hit.point);
 
                 int x = (int)index.x
@@ -47,7 +49,10 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-                    Debug.Log("Error: clicking inside of a cube at position " + index.ToString());
+                    GameObject go = Instantiate(blockPrefab) as GameObject;
+
+                    Vector3 newIndex = BlockPosition(hit.point + hit.normal);
+                    PositionBlock(go.transform, newIndex);
                 }
             }
         }
