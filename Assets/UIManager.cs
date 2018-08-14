@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
     private bool menuAnimating;
     private bool areMenuShowing;
     private float menuAnimationTransition;
+    private float animationDuration = 0.2f;
 
 	private void Update() {
         if (Input.GetKeyDown(KeyCode.A))
@@ -20,7 +21,7 @@ public class UIManager : MonoBehaviour {
         {
             if (areMenuShowing)
             {
-                menuAnimationTransition += Time.deltaTime;
+                menuAnimationTransition += Time.deltaTime * (1 - animationDuration);
                 if (menuAnimationTransition >= 1)
                 {
                     menuAnimationTransition = 1;
@@ -29,7 +30,7 @@ public class UIManager : MonoBehaviour {
             }
             else
             {
-                menuAnimationTransition -= Time.deltaTime;
+                menuAnimationTransition -= Time.deltaTime * (1 - animationDuration);
                 if (menuAnimationTransition <= 0)
                 {
                     menuAnimationTransition = 0;
@@ -37,6 +38,7 @@ public class UIManager : MonoBehaviour {
                 }
             }
             colorMenu.anchoredPosition = Vector2.Lerp(new Vector2(0, 375), new Vector2(0, -125), menuAnimationTransition);
+            actionMenu.anchoredPosition = Vector2.Lerp(new Vector2(-375, 0), new Vector2(125, 0), menuAnimationTransition);
         }
 	}
 
