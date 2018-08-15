@@ -8,6 +8,14 @@ public class Block
     public Transform blockTransform;
 }
 
+public enum BlockColor
+{
+    White = 0,
+    Red = 1,
+    Green = 2,
+    Blue = 3
+}
+
 public class GameManager : MonoBehaviour {
 
     private float blockSize = 0.25f;
@@ -15,8 +23,10 @@ public class GameManager : MonoBehaviour {
     public Block[,,] blocks = new Block[20, 20, 20];
     public GameObject blockPrefab;
 
-    private GameObject foundationObject;
+    public BlockColor selectedColor;
+    public Material[] blockMaterials;
 
+    private GameObject foundationObject;
     private Vector3 blockOffset;
     private Vector3 foundationCenter = new Vector3(1.25f, 0f, 1.25f);
 
@@ -24,6 +34,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         foundationObject = GameObject.Find("Foundation");
         blockOffset = (Vector3.one * 0.5f) / 4;
+        selectedColor = BlockColor.White;
     }
 	
 	// Update is called once per frame
@@ -42,7 +53,7 @@ public class GameManager : MonoBehaviour {
 
                 if (blocks[x, y, z] == null)
                 {
-                    GameObject go = Instantiate(blockPrefab) as GameObject;
+                    GameObject go = CreateBlock();
                     go.transform.localScale = Vector3.one * blockSize;
                     PositionBlock(go.transform, index);
 
@@ -53,7 +64,7 @@ public class GameManager : MonoBehaviour {
                 }
                 else
                 {
-                    GameObject go = Instantiate(blockPrefab) as GameObject;
+                    GameObject go = CreateBlock();
                     go.transform.localScale = Vector3.one * blockSize;
 
                     Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
@@ -62,6 +73,13 @@ public class GameManager : MonoBehaviour {
             }
         }
 	}
+
+    private GameObject CreateBlock()
+    {
+        GameObject go = Instantiate(blockPrefab) as GameObject;
+        go.GetComponent<Renderer>().material = blockMaterials[(int)selectedColor];
+        return go;
+    }
 
     private Vector3 BlockPosition(Vector3 hit)
     {
@@ -75,5 +93,10 @@ public class GameManager : MonoBehaviour {
     private void PositionBlock(Transform t, Vector3 index)
     {
         t.position = ((index * blockSize) + blockOffset) + (foundationObject.transform.position - foundationCenter);
+    }
+
+    public void ChangeBlockColor(int color)
+    {
+        selectedColor = (BlockColor)color;
     }
 }

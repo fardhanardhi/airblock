@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour {
                     menuAnimating = false;
                 }
             }
-            colorMenu.anchoredPosition = Vector2.Lerp(new Vector2(0, 375), new Vector2(0, -125), menuAnimationTransition);
+            colorMenu.anchoredPosition = Vector2.Lerp(new Vector2(0, 500), new Vector2(0, -125), menuAnimationTransition);
             actionMenu.anchoredPosition = Vector2.Lerp(new Vector2(-375, 0), new Vector2(125, 0), menuAnimationTransition);
         }
 	}
