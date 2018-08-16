@@ -6,6 +6,7 @@ using System;
 public class Block
 {
     public Transform blockTransform;
+    public BlockColor color;
 }
 
 public enum BlockColor
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour {
     private GameObject foundationObject;
     private Vector3 blockOffset;
     private Vector3 foundationCenter = new Vector3(1.25f, 0f, 1.25f);
+    private bool isDeleting;
 
 	// Use this for initialization
 	void Start () {
@@ -51,6 +53,14 @@ public class GameManager : MonoBehaviour {
                     , y = (int)index.y
                     , z = (int)index.z;
 
+                if (isDeleting && hit.transform.name != "Foundation")
+                {
+                    Vector3 oldCubeIndex = BlockPosition(hit.point - (hit.normal * (blockSize - 0.01f)));
+                    Destroy(blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z].blockTransform.gameObject);
+                    blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z] = null;
+                    return;
+                }
+
                 if (blocks[x, y, z] == null)
                 {
                     GameObject go = CreateBlock();
@@ -59,7 +69,8 @@ public class GameManager : MonoBehaviour {
 
                     blocks[x, y, z] = new Block
                     {
-                        blockTransform = go.transform
+                        blockTransform = go.transform,
+                        color = selectedColor
                     };
                 }
                 else
@@ -68,6 +79,11 @@ public class GameManager : MonoBehaviour {
                     go.transform.localScale = Vector3.one * blockSize;
 
                     Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
+                    blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
+                    {
+                        blockTransform = go.transform,
+                        color = selectedColor
+                    };
                     PositionBlock(go.transform, newIndex);
                 }
             }
@@ -98,5 +114,10 @@ public class GameManager : MonoBehaviour {
     public void ChangeBlockColor(int color)
     {
         selectedColor = (BlockColor)color;
+    }
+
+    public void ToggleDelete()
+    {
+        isDeleting = !isDeleting;
     }
 }
