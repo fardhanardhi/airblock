@@ -46,20 +46,22 @@ public class GameManager : MonoBehaviour {
             RaycastHit hit;
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 30.0f))
             {
+                if (isDeleting)
+                {
+                    if (hit.transform.name != "Foundation")
+                    {
+                        Vector3 oldCubeIndex = BlockPosition(hit.point - (hit.normal * (blockSize - 0.01f)));
+                        Destroy(blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z].blockTransform.gameObject);
+                        blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z] = null;
+                    }
+                    return;
+                }
 
                 Vector3 index = BlockPosition(hit.point);
 
                 int x = (int)index.x
                     , y = (int)index.y
                     , z = (int)index.z;
-
-                if (isDeleting && hit.transform.name != "Foundation")
-                {
-                    Vector3 oldCubeIndex = BlockPosition(hit.point - (hit.normal * (blockSize - 0.01f)));
-                    Destroy(blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z].blockTransform.gameObject);
-                    blocks[(int)oldCubeIndex.x, (int)oldCubeIndex.y, (int)oldCubeIndex.z] = null;
-                    return;
-                }
 
                 if (blocks[x, y, z] == null)
                 {
