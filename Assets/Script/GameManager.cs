@@ -69,7 +69,6 @@ public class GameManager : MonoBehaviour {
                 if (blocks[x, y, z] == null)
                 {
                     GameObject go = CreateBlock();
-                    go.transform.localScale = Vector3.one * blockSize;
                     PositionBlock(go.transform, index);
 
                     blocks[x, y, z] = new Block
@@ -81,7 +80,6 @@ public class GameManager : MonoBehaviour {
                 else
                 {
                     GameObject go = CreateBlock();
-                    go.transform.localScale = Vector3.one * blockSize;
 
                     Vector3 newIndex = BlockPosition(hit.point + (hit.normal * blockSize));
                     blocks[(int)newIndex.x, (int)newIndex.y, (int)newIndex.z] = new Block
@@ -99,6 +97,21 @@ public class GameManager : MonoBehaviour {
     {
         GameObject go = Instantiate(blockPrefab) as GameObject;
         go.GetComponent<Renderer>().material = blockMaterials[(int)selectedColor];
+        go.transform.localScale = Vector3.one * blockSize;
+        return go;
+    }
+
+    public GameObject CreateBlock(int x, int y, int z, Block b)
+    {
+        GameObject go = Instantiate(blockPrefab) as GameObject;
+        go.GetComponent<Renderer>().material = blockMaterials[(int)b.color];
+        go.transform.localScale = Vector3.one * blockSize;
+
+        b.blockTransform = go.transform;
+        blocks[x, y, z] = b;
+
+        PositionBlock(b.blockTransform, new Vector3(x, y, z));
+
         return go;
     }
 
@@ -111,7 +124,7 @@ public class GameManager : MonoBehaviour {
         return new Vector3(x,y,z);
     }
 
-    private void PositionBlock(Transform t, Vector3 index)
+    public void PositionBlock(Transform t, Vector3 index)
     {
         t.position = ((index * blockSize) + blockOffset) + (foundationObject.transform.position - foundationCenter);
     }
@@ -125,4 +138,5 @@ public class GameManager : MonoBehaviour {
     {
         isDeleting = !isDeleting;
     }
+
 }
