@@ -19,6 +19,8 @@ public enum BlockColor
 
 public class GameManager : MonoBehaviour {
 
+    public static GameManager Instance { set; get; }
+
     private float blockSize = 0.25f;
 
     public Block[,,] blocks = new Block[20, 20, 20];
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Instance = this;
         foundationObject = GameObject.Find("Foundation");
         blockOffset = (Vector3.one * 0.5f) / 4;
         selectedColor = BlockColor.White;
