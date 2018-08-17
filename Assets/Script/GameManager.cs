@@ -139,4 +139,22 @@ public class GameManager : MonoBehaviour {
         isDeleting = !isDeleting;
     }
 
+    public void ResetGrid()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            for (int j = 0; j < 20; j++)
+            {
+                for (int k = 0; k < 20; k++)
+                {
+                    if (blocks[i, j, k] == null)
+                        continue;
+
+                    Destroy(blocks[i, j, k].blockTransform.gameObject);
+                    blocks[i, j, k] = null;
+                }
+            }
+        }
+    }
+
 }
