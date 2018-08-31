@@ -21,4 +21,4 @@ Made with Unity3D Engine and Vuforia AR Plugin
 - [x] Target tracking
 
 ## Screenshots
-<!-- ![Gameplay](https://github.com/fardhanardhi/polinemaps/blob/master/images/ss.png?raw=true "Polinemaps Gameplay") -->
+![Gameplay](https://github.com/fardhanardhi/airblock/blob/master/images/ss.png?raw=true "Airblock Gameplay")
