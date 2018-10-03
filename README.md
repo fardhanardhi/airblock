@@ -13,11 +13,11 @@ Made with Unity3D Engine and Vuforia AR Plugin
 - [x] AR Camera auto focus continuously
 - [x] Block coloring
 - [x] Delete block
-- [ ] Extended tracking
-- [ ] Integrate with Virtual Reality
+- [x] Extended tracking
+- [x] Integrate with Virtual Reality
 - [x] Place block
 - [x] Save & load game
-- [ ] Scan with ID Card (KTM) as target marker
+- [x] Scan with ID Card (KTM) as target marker
 - [x] Target tracking
 
 ## Screenshots
